@@ -1,16 +1,50 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import { tsImportEqualsDeclaration } from "@babel/types";
 
 class Square extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: null
+    };
+  }
+
   render() {
-    return <button className="square">{/* TODO */}</button>;
+    return (
+      <button className="square" onClick={this.props.onClick}>
+        {this.props.value}
+      </button>
+    );
   }
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
-    return <Square />;
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      squares: Array(9).fill(null)
+    };
+  }
+
+  handleClick = index => {
+    const squares = this.state.squares.slice();
+    squares[index] = "X";
+    this.setState({
+      squares: squares
+    });
+  };
+
+  renderSquare(index) {
+    return (
+      <Square
+        value={this.state.squares[index]}
+        onClick={() => this.handleClick(index)}
+      />
+    );
   }
 
   render() {
