@@ -10,24 +10,46 @@ export default class Home extends React.Component {
     };
   }
 
-  //   connectToDB = () => {
-  //     console.log("Connecting...");
-  //     const connection = SQL.createConnection({
-  //       host: "35.222.200.150",
-  //       user: "root",
-  //       password: "root"
-  //     });
+  componentDidMount() {
+    this.getArtists();
+  }
 
-  //     connection.connect(err => {
-  //       if (err) {
-  //         console.log(`Error Connecting: ${err}`);
-  //         return;
-  //       } else {
-  //         // Success
-  //         console.log(`Connected as ID: ${connection.threadId}`);
-  //       }
-  //     });
-  //   };
+  getArtists = () => {
+    fetch("http://localhost:4000")
+      .then(response => response.json())
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch(err => console.log(err));
+
+    // fetch("192.168.0.21/artists")
+    //   .then(results => {
+    //     results = results.json();
+    //     console.log(results);
+    //     return results;
+    //   })
+    //   .then(
+    //     data => {
+    //       let stuff = data;
+    //       console.log("Succ...");
+    //       console.log(stuff);
+    //     },
+    //     err => {
+    //       console.log("Fail...");
+    //       console.log(err);
+    //     }
+    //   );
+
+    // fetch("www.project-jimbo.appspot.com/artists")
+    //   .then(response => {
+    //       console.log(`1) Response: ${response}`);
+    //     response.json();
+    //   })
+    //   .then(data => {
+    //     console.log(data);
+    //   })
+    //   .catch(err => console.error(err));
+  };
 
   render() {
     return (
