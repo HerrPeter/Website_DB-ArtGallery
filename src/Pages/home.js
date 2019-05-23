@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Table } from "reactstrap";
+import Select from "react-select";
 
 // -- My stuff -- //
 import ART_SERVER from "../misc/server-info";
@@ -11,7 +12,14 @@ export default class Home extends React.Component {
 
     this.state = {
       records: [],
-      columns: []
+      columns: [],
+      dropDowns: {
+        table: {
+          open: false,
+          selectedValue: "NA"
+        }
+      },
+      value: null
     };
   }
 
@@ -37,13 +45,77 @@ export default class Home extends React.Component {
     return <p key={artist_id}>{`Id: ${artist_id} Name: ${name}`}</p>;
   };
 
+  // Toggle open/close dropdown for tables.
+  toggleTableDropdown = () => {
+    this.setState({
+      dropDowns: {
+        table: {
+          open: !this.state.dropDowns.table.open
+        }
+      }
+    });
+  };
+
+  handleTableDropdownChange = selected => {
+    // this.setState({
+    //   dropDowns: {
+    //     table: {
+    //       selectedValue: selected.value
+    //     }
+    //   }
+    // });
+    this.setState({
+      value: selected.value
+    });
+    console.log(this.state.value);
+  };
+
   render() {
-    var { records, columns } = this.state;
+    var { records, columns, dropDowns } = this.state;
 
     return (
       <div>
         <h1>Art Show Gallery Database</h1>
+        <div>
+          <Select
+            value={this.state.value}
+            onChange={selected => this.handleTableDropdownChange(selected)}
+            placeholder="Select DB Table"
+            options={[
+              { value: "Artist", label: "Artist" },
+              { value: "ArtWork", label: "ArtWork" }
+            ]}
+          />
 
+          {/* <Dropdown
+            isOpen={dropDowns.table.open}
+            toggle={this.toggleTableDropdown}
+            direction="down"
+          >
+            <DropdownToggle
+              onSelect={stuff => {
+                console.log(stuff);
+              }}
+              caret
+            >
+              Select DB Table
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>Artist</DropdownItem>
+              <DropdownItem>ArtWork</DropdownItem>
+              <DropdownItem>Contact</DropdownItem>
+              <DropdownItem>Customer</DropdownItem>
+              <DropdownItem>ArtShow</DropdownItem>
+              <DropdownItem>GalleryLocation</DropdownItem>
+              <DropdownItem>ArtType</DropdownItem>
+              <DropdownItem>ArtShowLocation</DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>ArtWork_Show</DropdownItem>
+              <DropdownItem>Show_Contact</DropdownItem>
+              <DropdownItem>ArtWork_Customer_Orders</DropdownItem>
+            </DropdownMenu>
+          </Dropdown> */}
+        </div>
         <Table bordered dark striped>
           <RenderRowOne columns={columns} />
           <RenderRecords columns={columns} records={records} />

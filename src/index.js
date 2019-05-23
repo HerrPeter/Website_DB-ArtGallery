@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 // -- My Stuff --//
 import Home from "./Pages/home.js";
-import "./index.css";
+import "./styles/index.css";
 
 class Index extends React.Component {
   render() {
