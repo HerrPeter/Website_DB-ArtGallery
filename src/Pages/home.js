@@ -1,3 +1,4 @@
+// -- 3rd Party Stuff -- //
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Table } from "reactstrap";
@@ -6,6 +7,9 @@ import Select from "react-select";
 // -- My stuff -- //
 import ART_SERVER from "../misc/server-info";
 import { RenderRowOne, RenderRecords } from "../components/table";
+
+// -- CSS Styles -- //
+import "../styles/pages/home.css";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -18,10 +22,6 @@ export default class Home extends React.Component {
         table: null
       }
     };
-  }
-
-  componentDidMount() {
-    this.getArtGalleryData();
   }
 
   // FETCH Req: Get data from DB given user selected options (i.e. Table).
@@ -48,11 +48,7 @@ export default class Home extends React.Component {
       });
   };
 
-  // Custom draw row for one artist.
-  renderArtist = ({ artist_id, name }) => {
-    return <p key={artist_id}>{`Id: ${artist_id} Name: ${name}`}</p>;
-  };
-
+  // Handle what happens when user selects option from dropdown menu (db tables).
   handleTableDropdownChange = selected => {
     this.setState({
       db_options: {
@@ -67,23 +63,23 @@ export default class Home extends React.Component {
     return (
       <div>
         <h1>Art Show Gallery Database</h1>
-        <div>
-          <Select
-            value={db_options.table}
-            options={[
-              { value: "Artist", label: "Artist Table" },
-              { value: "ArtWork", label: "ArtWork Table" }
-            ]}
-            onChange={this.handleTableDropdownChange}
-          />
+        <div class="row">
+          <div class="column">
+            <Select
+              value={db_options.table}
+              options={ART_SERVER.database.tables}
+              onChange={this.handleTableDropdownChange}
+            />
+          </div>
+          <div class="column">
+            <Button onClick={this.getArtGalleryData}>Run Search</Button>
+          </div>
         </div>
 
         <Table bordered dark striped>
           <RenderRowOne columns={columns} />
           <RenderRecords columns={columns} records={records} />
         </Table>
-
-        <Button onClick={this.getArtGalleryData}>Run Search</Button>
       </div>
     );
   }
