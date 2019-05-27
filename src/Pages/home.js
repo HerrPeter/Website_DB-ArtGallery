@@ -5,6 +5,7 @@ import Select from "react-select";
 
 // -- My stuff -- //
 import ART_SERVER from "../misc/server-info";
+import { RenderRowOne, RenderRecords } from "../components/table";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -13,25 +14,32 @@ export default class Home extends React.Component {
     this.state = {
       records: [],
       columns: [],
-      dropDowns: {
-        table: {
-          open: false,
-          selectedValue: "NA"
-        }
-      },
-      value: null
+      db_options: {
+        table: null
+      }
     };
   }
 
   componentDidMount() {
-    this.getArtists();
+    this.getArtGalleryData();
   }
 
-  getArtists = () => {
-    fetch(`${ART_SERVER.host}/artists`)
+  // FETCH Req: Get data from DB given user selected options (i.e. Table).
+  getArtGalleryData = () => {
+    const { table } = this.state.db_options;
+    if (!table) {
+      return;
+    }
+
+    // Encode query (INCOMPLETE).
+    //const query = btoa(`table=${table.value}`);
+    const query = `table=${table.value}`;
+
+    fetch(`${ART_SERVER.host}/artists?${query}`)
       .then(response => response.json())
       .then(({ data, columns }) => {
         this.setState({ records: data, columns: columns });
+        console.log(`FETCHED Data:`);
         console.log(data);
       })
       .catch(err => {
@@ -45,146 +53,38 @@ export default class Home extends React.Component {
     return <p key={artist_id}>{`Id: ${artist_id} Name: ${name}`}</p>;
   };
 
-  // Toggle open/close dropdown for tables.
-  toggleTableDropdown = () => {
+  handleTableDropdownChange = selected => {
     this.setState({
-      dropDowns: {
-        table: {
-          open: !this.state.dropDowns.table.open
-        }
+      db_options: {
+        table: selected
       }
     });
   };
 
-  handleTableDropdownChange = selected => {
-    // this.setState({
-    //   dropDowns: {
-    //     table: {
-    //       selectedValue: selected.value
-    //     }
-    //   }
-    // });
-    this.setState({
-      value: selected.value
-    });
-    console.log(this.state.value);
-  };
-
   render() {
-    var { records, columns, dropDowns } = this.state;
+    const { records, columns, db_options } = this.state;
 
     return (
       <div>
         <h1>Art Show Gallery Database</h1>
         <div>
           <Select
-            value={this.state.value}
-            onChange={selected => this.handleTableDropdownChange(selected)}
-            placeholder="Select DB Table"
+            value={db_options.table}
             options={[
-              { value: "Artist", label: "Artist" },
-              { value: "ArtWork", label: "ArtWork" }
+              { value: "Artist", label: "Artist Table" },
+              { value: "ArtWork", label: "ArtWork Table" }
             ]}
+            onChange={this.handleTableDropdownChange}
           />
-
-          {/* <Dropdown
-            isOpen={dropDowns.table.open}
-            toggle={this.toggleTableDropdown}
-            direction="down"
-          >
-            <DropdownToggle
-              onSelect={stuff => {
-                console.log(stuff);
-              }}
-              caret
-            >
-              Select DB Table
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>Artist</DropdownItem>
-              <DropdownItem>ArtWork</DropdownItem>
-              <DropdownItem>Contact</DropdownItem>
-              <DropdownItem>Customer</DropdownItem>
-              <DropdownItem>ArtShow</DropdownItem>
-              <DropdownItem>GalleryLocation</DropdownItem>
-              <DropdownItem>ArtType</DropdownItem>
-              <DropdownItem>ArtShowLocation</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>ArtWork_Show</DropdownItem>
-              <DropdownItem>Show_Contact</DropdownItem>
-              <DropdownItem>ArtWork_Customer_Orders</DropdownItem>
-            </DropdownMenu>
-          </Dropdown> */}
         </div>
+
         <Table bordered dark striped>
           <RenderRowOne columns={columns} />
           <RenderRecords columns={columns} records={records} />
         </Table>
 
-        <Button onClick={() => this.getArtists()}>Click Me</Button>
+        <Button onClick={this.getArtGalleryData}>Run Search</Button>
       </div>
     );
   }
-}
-
-// Custom draw: First row of a table.
-function RenderRowOne(props) {
-  var { columns } = props;
-  if (columns === null) {
-    console.log("No column data");
-    return;
-  }
-
-  return (
-    <thead>
-      <tr>
-        {columns.map((column, index) =>
-          _renderHeadCol({ colName: column.name, index })
-        )}
-      </tr>
-    </thead>
-  );
-}
-
-function _renderHeadCol(props) {
-  return <th key={props.index}>{props.colName}</th>;
-}
-
-// Custom draw: Every every record with data to the table.
-function RenderRecords(props) {
-  var { records, columns } = props;
-  if (!records || !columns) {
-    console.log("No column or record data");
-    return;
-  }
-
-  return (
-    <tbody>
-      {records.map((record, index) =>
-        _renderRecordRow({
-          record,
-          columns,
-          index
-        })
-      )}
-    </tbody>
-  );
-}
-
-function _renderRecordRow(props) {
-  var { record, columns, index } = props;
-  return (
-    <tr key={index}>
-      {/* \/\/ This is for bold first column values. */}
-      {/* <th scope="row">{props.record.artist_id}</th> */}
-      {columns.map((column, index) =>
-        _renderRecordCol({ record, column, index })
-      )}
-    </tr>
-  );
-}
-
-function _renderRecordCol(props) {
-  var { index, record, column } = props;
-  return <td key={index}>{record[column.name]}</td>;
 }
