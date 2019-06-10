@@ -11,6 +11,7 @@ import { RenderRowOne, RenderRecords } from "../components/table";
 // -- CSS Styles -- //
 import "../styles/pages/home.css";
 
+// -- Home Page Class -- //
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
