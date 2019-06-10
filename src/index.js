@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // -- My Stuff --//
-import Home from "./Pages/home.js";
+import Home from "./pages/home.js";
 import "./styles/index.css";
 
 class Index extends React.Component {
