@@ -1,94 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import { tsImportEqualsDeclaration } from "@babel/types";
 
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
+// -- My Stuff --//
+import Home from "./pages/home.js";
+import "./styles/index.css";
 
-    this.state = {
-      value: null
-    };
-  }
-
+class Index extends React.Component {
   render() {
-    return (
-      <button className="square" onClick={this.props.onClick}>
-        {this.props.value}
-      </button>
-    );
-  }
-}
-
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      squares: Array(9).fill(null)
-    };
-  }
-
-  handleClick = index => {
-    const squares = this.state.squares.slice();
-    squares[index] = "X";
-    this.setState({
-      squares: squares
-    });
-  };
-
-  renderSquare(index) {
-    return (
-      <Square
-        value={this.state.squares[index]}
-        onClick={() => this.handleClick(index)}
-      />
-    );
-  }
-
-  render() {
-    const status = "Next player: X";
-
-    return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
-}
-
-class Game extends React.Component {
-  render() {
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
-      </div>
-    );
+    return <Home />;
   }
 }
 
 // ========================================
 
-ReactDOM.render(<Game />, document.getElementById("root"));
+ReactDOM.render(<Index />, document.getElementById("root"));
