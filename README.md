@@ -2,7 +2,7 @@ Problem:
     Access data from a backend server that has access to a GCP (Google Cloud Platform) SQL Database.
     
 Solution:
-    -Run Nodejs server on my laptop (for build stages).
+    - Run Nodejs server on my laptop (for build stages).
     -Create SQL connection to database (run on GCP).
     -Create an API to fetch data from the database.
     
