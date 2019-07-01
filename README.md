@@ -7,7 +7,7 @@ Solution:
 * Create an API to fetch data from the database.
     
 Lessons:
-    * How to create a basic react web-app.
-    * How to create an API to fetch data.
-    * How to create a relational SQL database hosted with GCP.
-    * How to securly connect to said databse from server to GCP.
+* How to create a basic react web-app.
+* How to create an API to fetch data.
+* How to create a relational SQL database hosted with GCP.
+* How to securly connect to said databse from server to GCP.
