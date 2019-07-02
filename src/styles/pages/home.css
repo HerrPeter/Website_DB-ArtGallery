@@ -1,10 +1,14 @@
 .row {
   display: table;
-  width: 100%; /*Optional*/
-  table-layout: fixed; /*Optional*/
-  border-spacing: 15px; /*Optional*/
+  width: 100%;          /*Optional*/
+  table-layout: fixed;  /*Optional*/
+  border-spacing: 5px; /*Optional*/
 }
 
 .column {
   display: table-cell;
+}
+
+#buttonInput {
+  margin-left: 30px;
 }
