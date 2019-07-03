@@ -51,9 +51,6 @@ export default class Home extends React.Component {
       .then(response => response.json())
       .then(({ data, columns }) => {
         this.setState({ records: data, columns: columns });
-        // console.log(`FETCHED Data:`);
-        // console.log(data);
-        // console.log(columns);
       })
       .catch(err => {
         console.log(err);
